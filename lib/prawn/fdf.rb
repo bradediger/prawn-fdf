@@ -6,7 +6,12 @@ module Prawn
     
     include Prawn::Document::Internals
 
-    def initialize(options={})
+    def self.generate(filename,options={},&block)
+      fdf = new(options,&block)
+      fdf.render_file(filename)
+    end
+
+    def initialize(options={}, &block)
       # add_fields stuffs refs into the Fields dict
       catalog = {:Fields => []}
 
@@ -15,6 +20,10 @@ module Prawn
       end
 
       @store = Prawn::FDF::ObjectStore.new(catalog)
+
+      if block
+        block.arity < 1 ? instance_eval(&block) : block[self]
+      end
     end
 
     def add_field(name, value)
