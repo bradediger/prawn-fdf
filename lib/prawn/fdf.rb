@@ -27,7 +27,7 @@ module Prawn
     end
 
     def add_field(name, value)
-      @store.catalog.data[:Fields] << ref!(:T => name, :V => value)
+      @store.catalog.data[:Fields] << {:T => name, :V => value}
     end
 
     # Write out the FDF Header, as per spec 8.6.6
